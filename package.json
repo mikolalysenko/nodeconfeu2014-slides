@@ -1,0 +1,20 @@
+{
+  "name": "nodeconfeu2014-timetravel",
+  "version": "0.0.0",
+  "description": "Slides for NodeConfEU 2014",
+  "main": "index.js",
+  "private": true,
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/mikolalysenko/nodeconfeu2014-timetravel.git"
+  },
+  "author": "Mikola Lysenko",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mikolalysenko/nodeconfeu2014-timetravel/issues"
+  },
+  "homepage": "https://github.com/mikolalysenko/nodeconfeu2014-timetravel"
+}
