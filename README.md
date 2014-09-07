@@ -1,8 +1,5 @@
-# Fixing lag in videogames using special relativity
+# Relativity for lag free online games
 
 * Author: Mikola Lysenko
 * Venue: NodeConfEU
-* Slide deck
-
-Other references:
 

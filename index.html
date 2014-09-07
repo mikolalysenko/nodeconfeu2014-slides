@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+
+    <title>Relativity for lag free online games</title>
+
+    <meta name="description" content="">
+    <meta name="author" content="Mikola Lysenko">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <link rel="stylesheet" href="node_modules/reveal.js/css/reveal.min.css">
+    <link rel="stylesheet" href="node_modules/reveal.js/css/theme/default.css" id="theme">
+
+    <script>
+      document.write( '<link rel="stylesheet" href="node_modules/reveal.js/css/print/' + ( window.location.search.match( /print-pdf/gi ) ? 'pdf' : 'paper' ) + '.css" type="text/css" media="print">' );
+    </script>
+    <script src="node_modules/reveal.js/js/reveal.js"></script>
+
+    <link rel="stylesheet" href="main.css">
+  </head>
+
+  <body>
+    <div class="reveal">
+      <div class="slides">
+
+        <!-- header page -->
+        <section>
+          <h1>Relativistic replication</h1>
+          <p>
+            <a href="http://0fps.net">Mikola Lysenko</a>
+            <p>University of Wisconsin-Madison</p>
+          </p>
+          <p style="text-align: center;">
+            <p>
+            <small>twitter <a href="http://twitter.com/mikolalysenko">@mikolalysenko</a>  |  github  <a href="http://github.com/mikolalysenko">@mikolalysenko</a>  |  blog: <a href="http://0fps.net">0fps.net</a></small>
+            </p>
+          </p>
+        </section>
+
+
+        <section>
+          <section>
+            <h1>Realtime multiplayer games on the web</h1>
+
+            <div class="fragment">
+              <h3>The technology is already here!</h3>
+              <ul>
+                <li>WebSockets</li>
+                <li>WebRTC</li>
+                <li>WebGL</li>
+                <li>WebAudio</li>
+                <li>Game pad API</li>
+                <li>node.js</li>
+              </ul>
+            </div>
+
+            <br>
+
+            <div class="fragment">
+              <h3>But why is almost no one writing them?</h3>
+            </div>
+          </section>
+
+          <section>
+            <h1>Online multiplayer games are hard to implement</h1>
+
+            <br>
+
+            <h3>Graphics + Distributed Systems = Hard problems</h3>
+          </section>
+
+          <section>
+            <h1>Some old experiments</h1>
+
+            <ul>
+              <li>Ludum Dare game</li>
+              <li>Node minecraft thing</li>
+              <li>Mine hack</li>
+            </ul>
+          </section>
+        </section>
+
+        
+        <section>
+
+          <section>
+
+            <h1>Multiplayer games as distributed replicas</h1>
+
+            <h3>Multiple machines, one shared state</h3>
+
+            <br>Insert picture here<br>
+
+          </section>
+
+          <section>
+            <h1>Issues in distributed systems</h1>
+
+            <br>
+            <br>
+
+
+            <div class="fragment">
+              <h3>New problems:</h3>
+              <ul>
+                <li>Byzantine failures</li>
+              </ul>
+            </div>
+
+            <br>
+
+            <div class="fragment">
+              <h3>New resources:</h3>
+              <ul>
+                <li>Bandwidth</li>
+                <li>Latency (RTTs)</li>
+              </ul>
+            </div>
+
+          </section>
+
+          <section>
+            <h1>Byzantine failures (aka cheating)</h1>
+
+            <br>
+            <h3 class="fragment">Players are intelligent and malicious agents</h3>
+            
+            <br>
+
+            <div class="fragment">
+              <h3>Easy solution</h3>
+              <p>Use client-server, one master replica</p>
+              <p class="fragment"><i>Cynical Bonus:</i>  Scarcity + Control = <font color="green">$$$</font></p>
+            </div>
+
+            <br>
+            <div class="fragment">
+              <h3>Better solution</h3>
+              <p>Peer-to-peer RAFT/PAXOS (?)</p>
+            </div>
+          </section>
+
+          <section>
+            <h1>Bandwidth</h1>
+
+            <div class="fragment">
+              <h3>Simple estimate for games:</h3>
+
+              <p>B = k n<sup>2</sup></p>
+
+              <ul>
+                <li>B = consumed bandwidth</li>
+                <li>k = input rate</li>
+                <li>n = number of players</li>
+              </ul>
+            </div>
+
+            <br><br>
+
+            <div class="fragment">
+              <h3>Easy solution:</h3>
+              <p>Assume n small (don't make an MMO!)</p>
+            </div>
+
+            <br>
+            <div class="fragment">
+              <h3>Better solution</h3>
+              <p>Region of interest management, throttling</p>
+            </div>
+          </section>
+
+
+          <section>
+            <h1>Lag</h1>
+
+            <h2 class="fragment">Consequence of physics</h2>
+
+            <br>
+
+            <div class="fragment">
+              <h3>Easy solution:</h3>
+              <p>Don't make a realtime multiplayer game</p>
+            </div>
+
+            <br>
+
+            <div class="fragment">
+              <h3>Better solution:</h3>
+              <p>Tradeoffs, subject of this talk!</p>
+            </div>
+          </section>
+
+          <section>
+            <h1>Replication and consistency</h1>
+
+            <h3>Consistency models determine replication algorithms</h3>
+
+            <br>
+
+            <div class="fragment">
+              <h3>Strong consistency:</h3>
+              <ul>
+                <li>Easier to reason about, less non-determinism</li>
+                <li>Requires more coordination, latency</li>
+              </ul>
+            </div>
+
+            <br>
+
+            <div class="fragment">
+              <h3>Weak consistency</h3>
+              <ul>
+                <li>Harder to reason about, bugs</li>
+                <li>Less coordination, lower latency</li>
+              </ul>
+            </div>
+          </section>
+
+        </section>
+
+        <section>
+          <section>
+            <h1>Lock-step synchronization</h1>
+
+            <h3>Enforce strict linearizability</h3>
+
+            <img width="100%" src="images/lockstep.gif">
+
+            <h3>All players barrier synchronize each tick</h3>
+          </section>
+
+
+          <section>
+            <h1>Lock-step synchronization</h1>
+
+            <div class="fragment">
+              <h3>Pros:</h3>
+              <ul>
+                <li>Strongest possible model of consistency</li>
+                <li>All players see same sequence of events</li>
+              </ul>
+            </div>
+
+            <div class="fragment">
+              <h3>Cons:</h3>
+              <ul>
+                <li>Input lag >= slowest RTT in network</li>
+                <li>Not robust to failures (eg desync bugs, players drop)</li>
+              </ul>
+            </div>
+          </section>
+        </section>
+
+        <section>
+          <section>
+            <h1>Dead reckoning</h1>
+
+            <h3>Eventual consistency</h3>
+
+            <br>
+            <br>
+
+            <ul>
+              <li class="fragment"><h3>Apply inputs immediately</h3></li>
+              <li class="fragment"><h3>Predict remote events</h3></li>
+              <li class="fragment"><h3>Correct errors</h3></li>
+            </ul>
+          </section>
+
+          <section>
+            <h2>Lag-free/Lock-step</h2>
+
+            <img width="100%" src="images/walk-nolag.gif">
+          </section>
+
+          <section>
+            <h2>Dead-reckoning with no correction</h2>
+
+            <img width="100%" src="images/walk-lag.gif">
+          </section>
+
+
+          <section>
+            <h2>Dead-reckoning with corrections</h2>
+
+            <img width="100%" src="images/walk-damped.gif">
+          </section>
+
+
+          <section>
+            <h2>Dead-reckoning with severe lag</h2>
+
+            <img width="100%" src="images/walk-severe-lag.gif">
+          </section>
+
+          <section>
+
+            <h1>Dead reckoning</h1>
+
+            <br>
+
+            <div class="fragment">
+              <h3>Pros:</h3>
+              <ul>
+                <li>No network lag on local input</li>
+              </ul>
+            </div>
+
+            <br>
+
+            <div class="fragment">
+              <h3>Cons:</h3>
+              <ul>
+                <li>Prediction doesn't always work</li>
+                <li>Correction expensive</li>
+                <li>Visual glitches</li>
+              </ul>
+            </div>
+          </section>
+
+        </section>
+
+        <section>
+
+          <section>
+            <h1>Local perception filters</h1>
+
+            <p>Insert reference</p>
+
+            <h3 class="fragment">Causal consistency</h3>
+
+            <ul>
+              <li class="fragment"><h3>Process input in causal order</h3></li>
+              <li class="fragment"><h3>Local player = sooner</h3></li>
+              <li class="fragment"><h3>Remote player = earlier</h3></li>
+            </ul>
+
+          </section>
+
+          <section>
+            <h1>Commutative (good)</h1>
+
+            <img width="45%" src="images/player1.gif">
+            <img width="45%" src="images/player2.gif">
+
+          </section>
+
+          <section>
+            <h1>Non-commutative (bad)</h1>
+
+            <img width="45%" src="images/player1hit.gif">
+            <img width="45%" src="images/player1miss.gif">
+          </section>
+
+          <section>
+            <h1>Non-commutative (ugly)</h1>
+
+            <img width="45%" src="images/consistent.gif">
+            <img width="45%" src="images/inconsistent.gif">
+          </section>
+        
+          <section>
+            <h1>Causality in space-time</h1>
+
+            <h3>Physically inspired model of causality</h3>
+
+            <ul>
+              <li class="fragment">No object travels faster than <i>c</i></li>
+              <li class="fragment">All objects are points</li>
+              <li class="fragment">Interactions occur instantly at discrete points</li>
+              <li class="fragment">Space is flat</li>
+            </ul>
+
+            <p>See my blog for more details</p>
+
+          </section>
+
+          <section>
+            <img height="100%" src="images/light-cone.png">
+          </section>
+
+          <section>
+            <h1>Causal order</h1>
+
+            <img width="100%" src="images/cone-of-uncertainty1.gif">
+          </section>
+
+          <section>
+            <h1>Cauchy surfaces</h1>
+
+            <h3 class="fragment">A "snapshot" of the world</h3>
+
+            <h3 class="fragment">Spatial analog of vector clocks</h3>
+
+            <br>
+
+            <p>
+              <ul>
+                <li class="fragment"><h3>Hypersurface in space-time</h3></li>
+                <li class="fragment"><h3>Unique intersection property</h3></li>
+              </ul>
+            </p>
+          </section>
+
+          <section>
+            <h1>Lock-step</h1>
+
+            <img width="100%" src="images/strict-cauchy1.gif">
+          </section>
+
+          <section>
+            <h1>Dead reckoning</h1>
+
+            <img width="100%" src="images/optimistic-cauchy1.gif">
+          </section>
+
+          <section>
+            <h1>Adaptive</h1>
+
+            <img width="100%" src="images/lpf-cauchy1.gif">
+          </section>
+
+          <section>
+            <h1>Time dilation</h1>
+
+            <img width="45%" src="images/shoot-red.gif">
+            <img width="45%" src="images/shoot-blue.gif">
+
+          </section>
+
+          <section>
+            <h1>Local perception filters</h1>
+
+            <br>
+            <h3>Pros:</h3>
+            <ul>
+              <li><h3>Responsive local inputs</h3></li>
+              <li><h3>Correct ordering of events</h3></li>
+            </ul>
+
+            <br><br>
+
+            <h3>Cons:</h3>
+            <ul>
+              <li><h3>Game must obey relativity</h3></li>
+            </ul>
+          </section>
+        </section>
+
+        <section>
+          <h1>Demo</h1>
+        </section>
+
+        <section>
+          <h1>References</h1>
+
+          <ul>
+            <li>Sharkey's paper</li>
+            <li>Smed on bullet time</li>
+            <li>Lamport on vector clocks</li>
+            <li>Hawking on Cauchy surfaces</li>
+            <li>0fps</li>
+          </ul>
+        </section>
+
+        <section>
+          <h3>Bullet time effects</h3>
+
+          <p>Glitch discovered by J. Smed</p>
+
+          <p>Insert referenece</p>
+
+          <p>Can "cheat" local perception filters by artificially lagging</p>
+
+          <p>Cheater defers inputs until after seeing remotes</p>
+
+          <p>Consequence: Matrix style bullet time</p>
+        </section>
+      </div>
+    </div>
+
+    <script src="bundle.js" type="text/javascript"></script>
+  </body>
+</html>
