@@ -11,7 +11,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
     <link rel="stylesheet" href="node_modules/reveal.js/css/reveal.min.css">
-    <link rel="stylesheet" href="node_modules/reveal.js/css/theme/default.css" id="theme">
+    <link rel="stylesheet" href="node_modules/reveal.js/css/theme/solarized.css" id="theme">
 
     <script>
       document.write( '<link rel="stylesheet" href="node_modules/reveal.js/css/print/' + ( window.location.search.match( /print-pdf/gi ) ? 'pdf' : 'paper' ) + '.css" type="text/css" media="print">' );
@@ -38,7 +38,6 @@
             </p>
           </p>
         </section>
-
 
         <section>
           <section>
@@ -71,28 +70,17 @@
             <h3>Graphics + Distributed Systems = Hard problems</h3>
           </section>
 
-          <section>
-            <h1>Some old experiments</h1>
-
-            <ul>
-              <li>Ludum Dare game</li>
-              <li>Node minecraft thing</li>
-              <li>Mine hack</li>
-            </ul>
-          </section>
         </section>
 
         
         <section>
 
           <section>
-
             <h1>Multiplayer games as distributed replicas</h1>
 
             <h3>Multiple machines, one shared state</h3>
 
-            <br>Insert picture here<br>
-
+            <img src="images/computers.png">
           </section>
 
           <section>
@@ -100,7 +88,6 @@
 
             <br>
             <br>
-
 
             <div class="fragment">
               <h3>New problems:</h3>
@@ -319,15 +306,11 @@
               </ul>
             </div>
           </section>
-
         </section>
 
         <section>
-
           <section>
             <h1>Local perception filters</h1>
-
-            <p>Insert reference</p>
 
             <h3 class="fragment">Causal consistency</h3>
 
@@ -336,6 +319,8 @@
               <li class="fragment"><h3>Local player = sooner</h3></li>
               <li class="fragment"><h3>Remote player = earlier</h3></li>
             </ul>
+
+            <p>P. Sharkey, M. Ryan, D. Roberts. (1998) "A local perception filter for virtual environments" VR Symp.</p>
 
           </section>
 
@@ -373,7 +358,7 @@
               <li class="fragment">Space is flat</li>
             </ul>
 
-            <p>See my blog for more details</p>
+            <p class="fragment"><a href="http://0fps.net/2014/02/26/replication-in-networked-games-spacetime-consistency-part-3/">See my blog for details</a></p>
 
           </section>
 
@@ -431,53 +416,94 @@
           </section>
 
           <section>
+            <h1>Implementing local perception filters</h1>
+
+              <ul>
+                <li class="fragment"><h3>Persistence</h3></li>
+                <li class="fragment"><h3>Determinism</h3></li>
+                <li class="fragment"><h3>Decoupled rendering</h3></li>
+              </ul>
+          </section>
+
+
+          <section>
             <h1>Local perception filters</h1>
 
             <br>
-            <h3>Pros:</h3>
+            <h3 class="fragment">Pros:</h3>
             <ul>
-              <li><h3>Responsive local inputs</h3></li>
-              <li><h3>Correct ordering of events</h3></li>
+              <li class="fragment"><h3>Responsive local inputs</h3></li>
+              <li class="fragment"><h3>Correct ordering of events</h3></li>
             </ul>
 
             <br><br>
 
-            <h3>Cons:</h3>
+            <h3 class="fragment">Cons:</h3>
             <ul>
-              <li><h3>Game must obey relativity</h3></li>
+              <li class="fragment"><h3>Can't remove all lag</h3></li>
+              <li class="fragment"><h3>Game must obey relativity</h3></li>
             </ul>
           </section>
         </section>
 
         <section>
-          <h1>Demo</h1>
+          <section>
+            <h1>Cheating the system</h1>
+
+            <h3 class="fragment">Players can defer actions by artificial lag</h3>
+
+            <h3 class="fragment">Gives advantage by increasing reaction time</h3>
+
+            <h3 class="fragment">But other players will still see consistent view of events...</h3>
+
+            <h3 class="fragment">What does this look like?</h3>
+          </section>
+
+          <section>
+            <h1>Bullet time</h1>
+
+            <img width="100%" src="images/bullet-time.gif">
+
+            <p>J. Smed, H. Niinisalo, H. Hakonen. (2004) "Realizing bullet time effects in multiplayer games with local perception filters"</p>
+          </section>
         </section>
 
         <section>
-          <h1>References</h1>
+          <section>
+            <h1>Demo</h1>
 
+            <h3><a href="http://192.168.4.104:8080">http://192.168.4.104:8080</a></h3>
+          </section>
+
+          <section>
+            <h1><a href="http://localhost:8080">Visualization</a></h1>
+          </section>
+        </section>
+
+        <section>
+          <h1>Thanks for listening!</h1>
+
+          <h3>Blog posts:</h3>
           <ul>
-            <li>Sharkey's paper</li>
-            <li>Smed on bullet time</li>
-            <li>Lamport on vector clocks</li>
-            <li>Hawking on Cauchy surfaces</li>
-            <li>0fps</li>
+            <li><a href="http://0fps.net/2014/02/10/replication-in-networked-games-overview-part-1/">Part 1</a></li>
+            <li><a href="http://0fps.net/2014/02/17/replication-in-networked-games-latency-part-2/">Part 2</a></li>
+            <li><a href="http://0fps.net/2014/02/26/replication-in-networked-games-spacetime-consistency-part-3/">Part 3</a></li>
+            <li><a href="http://0fps.net/2014/03/09/replication-in-network-games-bandwidth-part-4/">Part 4</a></li>
           </ul>
         </section>
 
         <section>
-          <h3>Bullet time effects</h3>
+          <h1>No-interaction theorem</h1>
 
-          <p>Glitch discovered by J. Smed</p>
+          <br>
 
-          <p>Insert referenece</p>
+          <p>Multibody physics doesn't really work with special relativity</p>
 
-          <p>Can "cheat" local perception filters by artificially lagging</p>
+          <p>Lorentz invariance or Newton's 3rd law: Pick 1</p>
 
-          <p>Cheater defers inputs until after seeing remotes</p>
-
-          <p>Consequence: Matrix style bullet time</p>
+          <p>System is either acausal or unstable</p>
         </section>
+
       </div>
     </div>
 
